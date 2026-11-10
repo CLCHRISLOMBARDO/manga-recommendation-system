@@ -1,0 +1,6 @@
+.env_sr
+dataset/
+dataset_backup/
+data_recuperacion/
+outputs/
+__pycache__
