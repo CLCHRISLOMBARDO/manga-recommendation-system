@@ -1,55 +1,35 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="es" data-theme="cupcake">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Ingreso</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
+    <title>Ingreso - Manga Recommender</title>
 </head>
+<body class="bg-base-200 min-h-screen flex items-center justify-center p-4">
+    
+    <div class="card w-full max-w-sm bg-base-100 shadow-2xl">
+        <div class="card-body">
+            <h2 class="card-title text-2xl font-bold justify-center mb-2">📚 Mi Manga App</h2>
+            <p class="text-center text-sm text-base-content/70 mb-6">Ingresa tu usuario para recibir recomendaciones personalizadas</p>
+            
+            <form method="post" action="/">
+                <div class="form-control w-full">
+                    <label class="label">
+                        <span class="label-text font-semibold">Usuario de lectura</span>
+                    </label>
+                    <input type="text" name="id_lector" placeholder="Ej: naruto_fan99" minlength="5" maxlength="30" required class="input input-bordered w-full focus:input-primary" />
+                </div>
+                
+                <div class="card-actions mt-6">
+                    <button type="submit" class="btn btn-primary w-full text-lg shadow-sm">Entrar al sistema</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-<body class="px-12 py-4">
-    <form method="post" action="/" class="w-96 border shadow-xl mx-auto mt-7 p-4">
-        <h2 class="mb-4 text-xl font-bold">Entrar al sistema</h2>
-        <div class="flex mb-4">
-            <label>
-                Usuario:
-                <input type="text" name="id_lector" minlength="5" maxlength="30" required class="p-1 border rounded" />
-            </label>
-        </div>
-
-        <!--
-        <div class="flex mb-4">
-            <label>
-                Nombre: <input type="text" name="nombre" minlength="3" maxlength="30" required class="p-1 border rounded">
-            </label>
-        </div>
-        <div class="flex mb-4">
-            <label>
-                Género:
-                <select name="genero" class="p-1 border rounded">
-                    <option value="" selected></option>
-                    <option value="Hombre">Masculino</option>
-                    <option value="Femenino">Femenino</option>
-                </select>
-            </label>
-        </div>
-        <div class="flex mb-4">
-            <label>
-                Vive en: <input type="text" name="vive_en" minlength="3" maxlength="30" class="p-1 border rounded">
-            </label>
-        </div>
-        <div class="flex mb-4">
-            <label>
-                Año de nacimiento: <input type="text" name="nacimiento" pattern="[0-9]{4}" maxlength="4" class="p-1 border rounded">
-            </label>
-        </div> -->
-
-        <div class="flex justify-end">
-            <button type="submit"
-                class="border bg-teal-500 hover:bg-teal-700 text-white text-lg font-bold px-4 py-2 ml-auto">Entrar</button>
-        </div>
-    </form>
 </body>
-
 </html>

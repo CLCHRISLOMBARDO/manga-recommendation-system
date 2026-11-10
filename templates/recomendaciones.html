@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="es" data-theme="cupcake">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,67 +8,99 @@
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5/themes.css" rel="stylesheet" type="text/css" />
-
-    <title>Recomendaciones para {{ id_lector }}</title>
+    <title>Recomendaciones | {{ id_lector }}</title>
 </head>
-
-<body class="px-6 py-4">
-    <div class="flex justify-between">
-        <h1 class="mb-4 text-lg font-bold">Recomendaciones para {{ id_lector }}</h1>
-        <div>
-            <small>{{ cant_vistos }} vistos, {{ cant_valorados }} interacciones - {{ algoritmo}} - <a
-                    href="/reset/{{ id_lector }}"
-                    class="bg-teal-400 text-white font-semibold text-xs px-2 py-1 mt-2 rounded cursor-pointer">reset</a>
-            </small>
+<body class="bg-base-200 min-h-screen pb-12">
+    
+    <!-- Barra de Navegación Superior -->
+    <div class="navbar bg-base-100 shadow-sm px-4 md:px-8 sticky top-0 z-50">
+        <div class="flex-1">
+            <a class="btn btn-ghost text-xl font-bold">📚 Manga App</a>
+        </div>
+        <div class="flex-none gap-4 items-center">
+            <div class="text-right hidden sm:block">
+                <p class="font-bold text-base-content text-sm">{{ id_lector }}</p>
+                <p class="text-xs text-base-content/70">{{ cant_vistos }} vistos | {{ cant_valorados }} valorados</p>
+            </div>
+            <div class="tooltip tooltip-bottom" data-tip="Motor de recomendación">
+                <div class="badge badge-primary badge-outline text-xs hidden md:inline-flex">{{ algoritmo }}</div>
+            </div>
+            <a href="/reset/{{ id_lector }}" class="btn btn-error btn-sm btn-soft">Resetear</a>
         </div>
     </div>
 
-    <form method="post" action="/recomendar/{{ id_lector }}">
-        <div class="grid grid-cols-3 gap-4">
-            {% for libro in libros_recomendados %}
-            <div class="card card-side bg-base-100 shadow-sm border bg-base-100">
-                <img src="{{ libro.imagen_url }}" class="w-full max-w-40" />
+    <!-- Contenedor Principal -->
+    <div class="container mx-auto px-4 mt-8">
+        <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+            <h1 class="text-3xl font-extrabold">Tus Recomendaciones</h1>
+        </div>
+        
+        <form method="post" action="/recomendar/{{ id_lector }}">
+            <!-- Grilla Responsiva: 1 columna en móvil, 2 en tablet, 3 en PC -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                {% for libro in libros_recomendados %}
+                <div class="card card-side bg-base-100 shadow-md hover:shadow-xl transition-shadow duration-300 border border-base-200 overflow-hidden h-64">
+                    
+                    <!-- Imagen ocupando 1/3 de la tarjeta -->
+                    <figure class="w-1/3 min-w-[120px] shrink-0 bg-base-300">
+                        <img src="{{ libro.imagen_url }}" alt="{{ libro.titulo }}" class="object-cover h-full w-full" />
+                    </figure>
+                    
+                    <!-- Contenido ocupando 2/3 -->
+                    <div class="card-body p-4 w-2/3 flex flex-col">
+                        <h2 class="card-title text-lg leading-tight link link-hover text-primary mb-1">
+                            <a href="/recomendaciones/{{ libro.id_libro }}">{{ libro.titulo|title }}</a>
+                        </h2>
+                        
+                        <div class="text-xs text-base-content/70 mb-2 font-medium">
+                            {{ libro.autor|title }} • {{ libro.editorial|title }}
+                        </div>
+                        
+                        <div class="mb-2">
+                            <span class="badge badge-neutral badge-sm">{{ libro.genero }}</span>
+                        </div>
+                        
+                        {% if libro.sinopsis %}
+                        <!-- line-clamp-3 corta el texto a las 3 líneas y pone puntos suspensivos -->
+                        <p class="text-xs text-base-content/80 line-clamp-3 overflow-hidden text-ellipsis mb-2">
+                            {{ libro.sinopsis }}
+                        </p>
+                        {% endif %}
 
-                <div class="card-body">
-                    <h2 class="card-title font-semibold link">
-                        <a href="/recomendaciones/{{ libro.id_libro }}">{{ libro.titulo|title }}</a>
-                    </h2>
-                    <span class="text-sm">
-                        {{ libro.autor|title }} - {{ libro.genero }} - {{ libro.editorial|title }}
-                    </span>
-                    {% if libro.sinopsis %}
-                    <span class="text-xs">{{ libro.sinopsis|truncate(400) }}</span>
-                    {% endif %}
-
-                    <div class="card-actions justify-end items-center mt-auto">
-
-                        <div class="flex">
-                            <label for="{{libro.id_libro}}" class="flex-none mr-2">Mi puntuación:</label>
-                            <select name="{{libro.id_libro}}" class="px-4 py-1 text-sm border rounded ">
-                                <option value="0" selected></option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                                <option value="10">10</option>
-                            </select>
+                        <!-- Selector de Puntuación al fondo de la tarjeta -->
+                        <div class="card-actions justify-end mt-auto w-full">
+                            <div class="join w-full shadow-sm">
+                                <div class="join-item flex items-center px-3 bg-base-200 text-xs font-semibold w-1/2 justify-center border border-base-300">
+                                    Puntuar
+                                </div>
+                                <select name="{{ libro.id_libro }}" class="select select-bordered select-sm join-item w-1/2 focus:outline-none">
+                                    <option value="0" selected>-</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
+                {% endfor %}
+
             </div>
-            {% endfor %}
-        </div>
 
-        <div class="flex justify-end">
-            <input type="submit" class="bg-teal-400 text-white font-semibold px-4 py-1 mt-2 rounded cursor-pointer"
-                value="Más recomendaciones">
-        </div>
-    </form>
+            <!-- Botón de Envío -->
+            <div class="flex justify-center mt-12">
+                <button type="submit" class="btn btn-primary btn-wide shadow-lg text-lg">Guardar y ver más</button>
+            </div>
+        </form>
+    </div>
+
 </body>
-
 </html>
